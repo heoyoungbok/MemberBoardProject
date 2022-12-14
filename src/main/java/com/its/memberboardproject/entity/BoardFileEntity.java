@@ -27,9 +27,13 @@ public class BoardFileEntity extends BaseEntity {
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "member_id")
+//    private MemberEntity memberEntity;
+
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "member_id")
 //    private MemberEntity MemberEntity;
 
-    private static BoardFileEntity toSaveFileEntity(BoardEntity entity,String originalFileName ,String storedFileName) {
+    public static BoardFileEntity toSaveFileEntity(BoardEntity entity, String originalFileName, String storedFileName) {
         BoardFileEntity boardFileEntity = new BoardFileEntity();
         boardFileEntity.setOriginalFileName(originalFileName);
         boardFileEntity.setStoredFileName(storedFileName);

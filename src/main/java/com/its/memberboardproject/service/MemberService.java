@@ -19,7 +19,7 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    public Long save(MemberDTO memberDTO) throws IOException {
+    public Long save(MemberDTO memberDTO) {
       Long savedId = memberRepository.save(MemberEntity.toSaveEntity(memberDTO)).getId();
       return savedId;
     }
@@ -32,5 +32,44 @@ public class MemberService {
                 return null;
             }
         }
+
+
+        public MemberDTO findByMemberEmail(String loginEmail){
+            Optional<MemberEntity>  optionalMemberEntity = memberRepository.findByMemberEmail(loginEmail);
+
+            if (optionalMemberEntity.isPresent()){
+                return MemberDTO.toDTO(optionalMemberEntity.get());
+
+            }else {
+                return null;
+            }
+        }
+
+
+
+        public String emailCheck(String memberEmail){
+            Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(memberEmail);
+            if (optionalMemberEntity.isEmpty()){
+                return "ok";
+            }else {
+                return null;
+            }
+        }
+
+    public MemberDTO login(MemberDTO memberDTO) {
+        Optional<MemberEntity> byMemberEmail = memberRepository.findByMemberEmail(memberDTO.getMemberEmail());
+        if (byMemberEmail.isPresent()){
+            MemberEntity memberEntity = byMemberEmail.get();
+            if (memberEntity.getMemberPassword().equals(memberDTO.getMemberPassword())){
+                MemberDTO dto = MemberDTO.toDTO(memberEntity);
+                return dto;
+            }else {
+                return null;
+            }
+        }else {
+            return null;
+        }
+
+    }
 }
 

@@ -1,20 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
-    <title>memberSave</title>
+    <title>save</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script th:src="@{/js/jquery.min.js}"></script>
 </head>
 <body>
 <form action="/member/save" method="post" enctype="multipart/form-data">
-  <input type="text" name="memberEmail" id="memberEmail" placeholder="이메일">
-  <input type="text" name="memberEmail" id="memberPassword" placeholder="비밀번호">
-  <input type="text" name="memberEmail" id="memberName" placeholder="이름">
-  <input type="text" name="memberEmail" id="memberMobile" placeholder="전화번호">
-  <input type="file" name="memberFile" multiple>
+  <input type="text" name="memberEmail" id="memberEmail" placeholder="이메일" onblur="emailCK()">
+    <span id="emailDUP"></span>
+  <input type="text" name="memberPassword" id="memberPassword" placeholder="비밀번호">
+  <input type="text" name="memberName" id="memberName" placeholder="이름">
+  <input type="text" name="memberMobile" id="memberMobile" placeholder="전화번호">
+  <input type="file" name="memberProfile" multiple>
   <input type="submit" value="회원가입">
 
 
 
 </form>
 </body>
+<script th:inline="javascript">
+    const emailCK= () => {
+        const email = document.getElementById("memberEmail").value;
+        const checkResult = document.getElementById("emailDUP")
+        console.log("이메일",email);
+            axios({
+                method:"post",
+                url:"/member/emailCheck",
+                params:{
+                    inputEmail:email,
+                }
+            }).then(res =>{
+                checkResult.innerHTML= "사용할 수 있는 이메일 입니다.";
+                checkResult.style.color = "green";
+
+            }).catch(err =>{
+                checkResult.innerHTML="중복된 이메일 입니다.";
+                checkResult.style.color="red";
+            })
+
+    }
+</script>
 </html>
