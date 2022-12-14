@@ -31,7 +31,7 @@ public class BoardEntity extends BaseEntity {
     private int boardHits;
 
     @Column
-   private int fileAttached;
+    private int fileAttached;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
@@ -40,6 +40,8 @@ public class BoardEntity extends BaseEntity {
     @OneToMany(mappedBy = "boardEntity",cascade = CascadeType.REMOVE,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<BoardFileEntity> boardFileEntityList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<CommentEntity> commentEntityList = new ArrayList<>();
 
 
     public static BoardEntity toSaveEntity(BoardDTO boardDTO, MemberEntity memberEntity){
@@ -50,7 +52,6 @@ public class BoardEntity extends BaseEntity {
         boardEntity.setBoardHits(0);
         boardEntity.setFileAttached(0);
         boardEntity.setMemberEntity(memberEntity);
-
         return boardEntity;
     }
 
@@ -63,7 +64,6 @@ public class BoardEntity extends BaseEntity {
         boardEntity.setBoardHits(0);
         boardEntity.setFileAttached(1);
         boardEntity.setMemberEntity(memberEntity);
-
         return boardEntity;
     }
 

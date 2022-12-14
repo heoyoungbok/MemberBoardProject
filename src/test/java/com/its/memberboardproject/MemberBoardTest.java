@@ -86,16 +86,17 @@ public class MemberBoardTest {
     }
 
 
-////    @Test
-////    @Transactional
-////    @Rollback(value = true)
-////    @DisplayName("게시판 생성 테스트")
-////    public void boardSaveTest()throws IOException{
-////        BoardDTO boardDTO = newBoard(1);
-////        Long saveBoard = boardService.save(boardDTO);
-////        BoardDTO savedBoard = boardService.findById()
-////
-//    }
+    @Test
+    @Transactional
+    @Rollback(value = true)
+    @DisplayName("게시판 생성 테스트")
+    public void boardSaveTest()throws IOException{
+        BoardDTO boardDTO = newBoard(1);
+        Long savedId = boardService.save(boardDTO);
+        BoardDTO findBoard = boardService.findById(savedId);
+        assertThat(boardDTO.getBoardWriter()).isEqualTo(findBoard.getBoardWriter());
+
+    }
 
 
 }

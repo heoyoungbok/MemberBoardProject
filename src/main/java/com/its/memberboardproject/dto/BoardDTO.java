@@ -3,9 +3,7 @@ package com.its.memberboardproject.dto;
 import com.its.memberboardproject.entity.BaseEntity;
 import com.its.memberboardproject.entity.BoardEntity;
 import com.its.memberboardproject.entity.BoardFileEntity;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
@@ -15,6 +13,8 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class BoardDTO {
     private Long id;
     private String boardTitle;
@@ -35,13 +35,14 @@ public class BoardDTO {
     private List<String> storedFileName;
 
 
-//    public BoardDTO(Long id, String boardWriter, String boardTitle, LocalDateTime boardCreatedTime, int boardHits) {
-//        this.id = id;
-//        this.boardWriter = boardWriter;
-//        this.boardTitle = boardTitle;
-//        this.boardCreatedTime = boardCreatedTime;
-//        this.boardHits = boardHits;
-//    }
+    public BoardDTO(Long id, String boardWriter, String boardTitle, LocalDateTime boardCreatedTime, int boardHits) {
+        this.id = id;
+        this.boardWriter = boardWriter;
+        this.boardTitle = boardTitle;
+        this.boardCreatedTime = boardCreatedTime;
+        this.boardHits = boardHits;
+    }
+
 
     public static BoardDTO boDTO(BoardEntity boardEntity) {
         BoardDTO boardDTO = new BoardDTO();
