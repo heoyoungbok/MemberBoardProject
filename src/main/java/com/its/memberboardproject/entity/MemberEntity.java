@@ -1,5 +1,6 @@
 package com.its.memberboardproject.entity;
 
+import com.its.memberboardproject.dto.BoardDTO;
 import com.its.memberboardproject.dto.MemberDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,11 +36,11 @@ public class MemberEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<BoardEntity> boardEntityList = new ArrayList<>();
-//    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-//    private List<BoardFileEntity> boardFileEntityList = new ArrayList<>();
-//
-//    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
-//    private List<CommentEntity> commentEntityList = new ArrayList<>();
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<BoardFileEntity> boardFileEntityList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<CommentEntity> commentEntityList = new ArrayList<>();
 
 
     public static MemberEntity toSaveEntity(MemberDTO memberDTO) {
@@ -52,7 +53,7 @@ public class MemberEntity extends BaseEntity {
         return memberEntity;
     }
 
-    public static MemberEntity toSaveFileEntity(MemberDTO memberDTO) {
+    public static MemberEntity toSaveMemberFileEntity(MemberDTO memberDTO) {
         MemberEntity memberEntity = new MemberEntity();
         memberEntity.setMemberEmail(memberDTO.getMemberEmail());
         memberEntity.setMemberPassword(memberDTO.getMemberPassword());
@@ -62,5 +63,23 @@ public class MemberEntity extends BaseEntity {
         return memberEntity;
 
     }
+    public static MemberEntity toUpdateEntity(MemberDTO memberDTO){
+     MemberEntity memberEntity = new MemberEntity();
+     memberEntity.setMemberEmail(memberDTO.getMemberEmail());
+     memberEntity.setMemberPassword(memberDTO.getMemberPassword());
+     memberEntity.setMemberName(memberDTO.getMemberName());
+     memberEntity.setMemberMobile(memberDTO.getMemberMobile());
+     memberEntity.setFileAttached(0);
+     return memberEntity;
+    }
 
+    public static MemberEntity toUpdateFileEntity(MemberDTO memberDTO){
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setMemberEmail(memberDTO.getMemberEmail());
+        memberEntity.setMemberPassword(memberDTO.getMemberPassword());
+        memberEntity.setMemberName(memberDTO.getMemberName());
+        memberEntity.setMemberMobile(memberDTO.getMemberMobile());
+        memberEntity.setFileAttached(1);
+        return memberEntity;
+    }
 }

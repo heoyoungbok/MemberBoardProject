@@ -69,8 +69,9 @@ public class BoardController {
         }else {
             model.addAttribute("commentList","empty");
         }
+        System.out.println(boardDTO);
         model.addAttribute("board",boardDTO);
         return "boardDetail";
      }
 
-}
+    }

@@ -3,7 +3,9 @@
 <th:block th:fragment="header">
   <meta charset="UTF-8">
   <title>Title</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
   <div class="p-3 text-bg-dark">
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -17,6 +19,8 @@
           <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
           <li><a href="/board/save" class="nav-link px-2 text-white">글작성</a></li>
           <li><a href="/board/" class="nav-link px-2 text-white">글목록</a></li>
+
+
         </ul>
 
         <form action="/board/search" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
@@ -32,19 +36,32 @@
             <button class="btn btn-outline-light"><i class="bi bi-search"></i></button>
           </div>
         </form>
-
         <div class="text-end">
-          <button type="button" onclick="login()" class="btn btn-outline-light me-2">Login</button>
-          <button type="button" class="btn btn-warning">Sign-up</button>
+          <div th:if="${session.loginEmail != null } ">
+            <button type="button" onclick="logout()" class="btn btn-warning">LOGOUT</button>
+<!--            <button type="button" onclick="myPages()" class="btn btn-warning">MY PAGE</button>-->
+            <td><a th:href="@{/member/page}" th:text="${session.loginEmail}"></a></td>
+          </div>
         </div>
+            <div th:unless="${session.loginEmail != null } ">
+          <button type="button" th:onclick="|location.href='@{/member/login}'|" class="btn btn-outline-light me-2">Login</button>
+          <button type="button" th:onclick="|location.href'@{/member/save}'|" class="btn btn-warning">Sign-up</button>
+            </div>
+            </div>
+      </div>
       </div>
     </div>
-  </div>
+
 </th:block>
 
 <script>
-  const login = () => {
-    location.href = "/memberLogin";
+
+
+  const logout = () => {
+    location.href = "/member/logout";
   }
+
+
+
 </script>
 </html>

@@ -61,7 +61,7 @@ public class BoardDTO {
 
             for (BoardFileEntity boardFileEntity : boardEntity.getBoardFileEntityList()){
                 originalFileNameList.add(boardFileEntity.getOriginalFileName());
-                originalFileNameList.add(boardFileEntity.getStoredFileName());
+                storedFileNameList.add(boardFileEntity.getStoredFileName());
             }
            boardDTO.setOriginalFileName(originalFileNameList);
             boardDTO.setStoredFileName(storedFileNameList);

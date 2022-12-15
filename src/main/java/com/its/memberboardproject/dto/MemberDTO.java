@@ -1,5 +1,6 @@
 package com.its.memberboardproject.dto;
 
+import com.its.memberboardproject.entity.BoardFileEntity;
 import com.its.memberboardproject.entity.MemberEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,9 +41,16 @@ public class MemberDTO {
         memberDTO.setMemberCreatedDate(memberEntity.getCreatedTime());
         memberDTO.setMemberUpCreatedDate(memberEntity.getUpdatedTime());
 
+        if (memberEntity.getFileAttached() == 0){
+            memberDTO.setFileAttached(memberEntity.getFileAttached());
+
+        }else{
+            memberDTO.setFileAttached(memberEntity.getFileAttached());
+            memberDTO.setOriginalFileName(memberEntity.getBoardFileEntityList().get(0).getOriginalFileName());
+            memberDTO.setStoredFileName(memberEntity.getBoardFileEntityList().get(0).getStoredFileName());
+        }
+
        return memberDTO;
     }
-
-
 
 }

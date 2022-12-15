@@ -5,9 +5,11 @@ import com.its.memberboardproject.dto.MemberDTO;
 import com.its.memberboardproject.entity.BoardEntity;
 import com.its.memberboardproject.entity.BoardFileEntity;
 import com.its.memberboardproject.entity.MemberEntity;
+import com.its.memberboardproject.repository.BoardFileRepository;
 import com.its.memberboardproject.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -18,11 +20,29 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final BoardFileRepository boardFileRepository;
 
-    public Long save(MemberDTO memberDTO) {
-      Long savedId = memberRepository.save(MemberEntity.toSaveEntity(memberDTO)).getId();
-      return savedId;
+    public void save(MemberDTO memberDTO) throws IOException {
+        if (memberDTO.getMemberProfile().isEmpty()){
+            MemberEntity memberEntity = MemberEntity.toSaveEntity(memberDTO);
+            memberRepository.save(memberEntity);
+        }else {
+            MultipartFile memberFile = memberDTO.getMemberProfile();
+            String originalFileName = memberFile.getOriginalFilename();
+            String storedFileName = System.currentTimeMillis()+"_"+originalFileName;
+            String savePath = "D:\\springboot_img\\" + storedFileName;
+            memberFile.transferTo(new File(savePath));
+            MemberEntity memberEntity = MemberEntity.toSaveMemberFileEntity(memberDTO);
+            Long savedId = memberRepository.save(memberEntity).getId();
+            MemberEntity entity = memberRepository.findById(savedId).get();
+
+            BoardFileEntity boardFileEntity = BoardFileEntity.toMemberFileEntity(entity,originalFileName,storedFileName);
+            boardFileRepository.save(boardFileEntity);
+        }
+
     }
+
+        @Transactional
         public MemberDTO findById(Long id){
             Optional<MemberEntity> optionalMemberEntity = memberRepository.findById(id);
             if (optionalMemberEntity.isPresent()){
@@ -56,6 +76,7 @@ public class MemberService {
             }
         }
 
+        @Transactional
     public MemberDTO login(MemberDTO memberDTO) {
         Optional<MemberEntity> byMemberEmail = memberRepository.findByMemberEmail(memberDTO.getMemberEmail());
         if (byMemberEmail.isPresent()){
@@ -69,6 +90,14 @@ public class MemberService {
         }else {
             return null;
         }
+
+    }
+
+
+    @Transactional
+    public void update(MemberDTO memberDTO) {
+        MemberEntity updateEntity = MemberEntity.toUpdateEntity(memberDTO);
+        memberRepository.save(updateEntity);
 
     }
 }
