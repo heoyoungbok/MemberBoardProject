@@ -53,7 +53,7 @@ public class MemberService {
         }
     }
 
-
+@Transactional
     public MemberDTO findByMemberEmail(String loginEmail) {
         Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(loginEmail);
 

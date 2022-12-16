@@ -72,6 +72,7 @@ public class BoardService {
     public void updateHits(Long id) {
     boardRepository.updateHits(id);
     }
+
     @Transactional
     public BoardDTO findById(Long id) {
         Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(id);
@@ -100,9 +101,9 @@ public class BoardService {
         return boardList;
     }
 
-
+    @Transactional
     public Long update(BoardDTO boardDTO) throws IOException {
-                memberRepository.findByMemberEmail(boardDTO.getBoardWriter()).get();
+
         if (boardDTO.getBoardFile() == null || boardDTO.getBoardFile().size() == 0) {
             BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
             return boardRepository.save(boardEntity).getId();

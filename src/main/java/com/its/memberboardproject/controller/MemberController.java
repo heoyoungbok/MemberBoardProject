@@ -45,44 +45,46 @@ public class MemberController {
 
 
     @GetMapping("/login")
-    public String loginForm(){
+    public String loginForm() {
         return "memberLogin";
     }
-    @Transactional
+
     @PostMapping("/login")
-    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session){
+    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session) {
         MemberDTO loginResult = memberService.login(memberDTO);
 
-        if(loginResult != null){
-            session.setAttribute("loginEmail",loginResult.getMemberEmail());
+        if (loginResult != null) {
+            session.setAttribute("loginEmail", loginResult.getMemberEmail());
             return "redirect:/board/";
-        }else {
+        } else {
             return "memberLogin";
         }
 
     }
-@Transactional
+
+    @Transactional
     @GetMapping("/page")
-    public String myPageForm(HttpSession session , Model model){
+    public String myPageForm(HttpSession session, Model model) {
         String memberEmail = (String) session.getAttribute("loginEmail");
         MemberDTO memberDTO = memberService.findByMemberEmail(memberEmail);
-        model.addAttribute("member",memberDTO);
+        model.addAttribute("member", memberDTO);
         return "myPage";
     }
 
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id , Model model) {
+    public String findById(@PathVariable Long id, Model model) {
         MemberDTO memberDTO = memberService.findById(id);
-        model.addAttribute("member",memberDTO);
+        model.addAttribute("member", memberDTO);
         return "myPage";
     }
-@Transactional
+
+    @Transactional
     @GetMapping("/update")
-    public String updateForm(HttpSession session ,Model model){
+    public String updateForm(HttpSession session, Model model) {
         String loginEmail = (String) session.getAttribute("loginEmail");
         MemberDTO memberDTO = memberService.findByMemberEmail(loginEmail);
-        model.addAttribute("member",memberDTO);
+        model.addAttribute("member", memberDTO);
         return "memberUpdate";
     }
 
@@ -93,12 +95,14 @@ public class MemberController {
         return "main";
 
     }
+}
 //@Transactional
 //    @PutMapping("/{id}")
 //    public ResponseEntity updateAxios(@RequestBody MemberDTO memberDTO) throws IOException {
 //        memberService.update(memberDTO);
 //        return new ResponseEntity<>(HttpStatus.OK);
 //    }
+//    @GetMapping("logout")
+//    public String logout
 
-
-}
+//}

@@ -2,8 +2,10 @@ package com.its.memberboardproject.controller;
 
 import com.its.memberboardproject.dto.BoardDTO;
 import com.its.memberboardproject.dto.CommentDTO;
+import com.its.memberboardproject.dto.MemberDTO;
 import com.its.memberboardproject.service.BoardService;
 import com.its.memberboardproject.service.CommentService;
+import com.its.memberboardproject.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,9 +13,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,6 +26,7 @@ import java.util.List;
 @RequestMapping("/board")
 public class BoardController {
     private final BoardService boardService;
+    private final MemberService memberService;
     private final CommentService commentService;
 //    @GetMapping
 //    public String boardForm(){
@@ -61,9 +66,12 @@ public class BoardController {
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model) {
+    public String findById(@PathVariable Long id, Model model,HttpSession session) {
+        String memberEmail = (String) session.getAttribute("loginEmail");
+        MemberDTO memberDTO = memberService.findByMemberEmail(memberEmail);
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
+        MemberDTO member= memberService.findById(id);
         List<CommentDTO> commentDTOList = commentService.findAll(id);
         if (commentDTOList.size() > 0) {
             model.addAttribute("commentList", commentDTOList);
@@ -73,13 +81,17 @@ public class BoardController {
         }
         System.out.println(boardDTO);
         model.addAttribute("board", boardDTO);
+        model.addAttribute("member",member);
+        model.addAttribute("member",memberDTO);
         return "boardDetail";
     }
 
     @GetMapping("/update/{id}")
     public String updateForm(@PathVariable Long id, Model model) {
     BoardDTO boardDTO = boardService.findById(id);
+    MemberDTO memberDTO = memberService.findById(id);
     model.addAttribute("board",boardDTO);
+    model.addAttribute("member",memberDTO);
     return "boardUpdate";
 
     }
