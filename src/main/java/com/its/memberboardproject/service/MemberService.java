@@ -75,7 +75,7 @@ public class MemberService {
         }
     }
 
-    @Transactional
+@Transactional
     public MemberDTO login(MemberDTO memberDTO) {
         Optional<MemberEntity> byMemberEmail = memberRepository.findByMemberEmail(memberDTO.getMemberEmail());
         if (byMemberEmail.isPresent()) {

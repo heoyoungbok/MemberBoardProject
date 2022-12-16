@@ -55,7 +55,7 @@ public class MemberController {
 
         if (loginResult != null) {
             session.setAttribute("loginEmail", loginResult.getMemberEmail());
-            return "redirect:/board/";
+            return "redirect:/board";
         } else {
             return "memberLogin";
         }
@@ -92,7 +92,7 @@ public class MemberController {
     @PostMapping("/update")
     public String update(@ModelAttribute MemberDTO memberDTO) throws IOException {
         memberService.update(memberDTO);
-        return "main";
+        return "paging";
 
     }
 

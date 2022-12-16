@@ -53,14 +53,16 @@ public class BoardController {
 
     @GetMapping
     public String paging(@PageableDefault(page = 1) Pageable pageable, Model model) {
+
         System.out.println("page" + pageable.getPageNumber());
         Page<BoardDTO> boardList = boardService.paging(pageable);
-        model.addAttribute("boardList", boardList);
+
         int blockLimit = 3;
         int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
         int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
         model.addAttribute("startPage", startPage);
         model.addAttribute("endPage", endPage);
+        model.addAttribute("boardList", boardList);
         return "paging";
 
     }
