@@ -75,6 +75,7 @@ public class MemberEntity extends BaseEntity {
 
     public static MemberEntity toUpdateFileEntity(MemberDTO memberDTO){
         MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setId(memberDTO.getId());
         memberEntity.setMemberEmail(memberDTO.getMemberEmail());
         memberEntity.setMemberPassword(memberDTO.getMemberPassword());
         memberEntity.setMemberName(memberDTO.getMemberName());

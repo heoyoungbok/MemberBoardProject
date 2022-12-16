@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +29,7 @@ public class BoardController {
 //    }
 
     @GetMapping("/save")
-    public String saveForm(){
+    public String saveForm() {
         return "boardSave";
     }
 
@@ -38,40 +40,65 @@ public class BoardController {
     }
 
     @GetMapping("/")
-    public String findAll(Model model){
+    public String findAll(Model model) {
         List<BoardDTO> boardList = boardService.findAll();
-        model.addAttribute("boardList",boardList);
+        model.addAttribute("boardList", boardList);
         return "main";
     }
 
     @GetMapping
-    public String paging(@PageableDefault(page = 1) Pageable pageable , Model model){
-        System.out.println("page"+pageable.getPageNumber());
+    public String paging(@PageableDefault(page = 1) Pageable pageable, Model model) {
+        System.out.println("page" + pageable.getPageNumber());
         Page<BoardDTO> boardList = boardService.paging(pageable);
-        model.addAttribute("boardList",boardList);
+        model.addAttribute("boardList", boardList);
         int blockLimit = 3;
-        int startPage = (((int)(Math.ceil((double) pageable.getPageNumber() / blockLimit))) -1 ) * blockLimit + 1;
-        int endPage = ((startPage + blockLimit -1) < boardList.getTotalPages()) ? startPage + blockLimit  - 1: boardList.getTotalPages();
-        model.addAttribute("startPage",startPage);
-        model.addAttribute("endPage",endPage);
+        int startPage = (((int) (Math.ceil((double) pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1;
+        int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         return "paging";
 
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable Long id, Model model){
+    public String findById(@PathVariable Long id, Model model) {
         boardService.updateHits(id);
         BoardDTO boardDTO = boardService.findById(id);
         List<CommentDTO> commentDTOList = commentService.findAll(id);
-        if (commentDTOList.size() > 0){
-            model.addAttribute("commentList",commentDTOList);
+        if (commentDTOList.size() > 0) {
+            model.addAttribute("commentList", commentDTOList);
 
-        }else {
-            model.addAttribute("commentList","empty");
+        } else {
+            model.addAttribute("commentList", "empty");
         }
         System.out.println(boardDTO);
-        model.addAttribute("board",boardDTO);
+        model.addAttribute("board", boardDTO);
         return "boardDetail";
-     }
+    }
+
+    @GetMapping("/update/{id}")
+    public String updateForm(@PathVariable Long id, Model model) {
+    BoardDTO boardDTO = boardService.findById(id);
+    model.addAttribute("board",boardDTO);
+    return "boardUpdate";
 
     }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute BoardDTO boardDTO, Model model) throws IOException {
+        boardService.update(boardDTO);
+        model.addAttribute("board",boardDTO);
+        return "boardDetail";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable Long id){
+        boardService.delete(id);
+        return "redirect:/board/";
+    }
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteByAxios(@PathVariable Long id){
+        boardService.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+}

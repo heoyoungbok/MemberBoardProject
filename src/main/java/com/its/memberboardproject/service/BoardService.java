@@ -101,7 +101,34 @@ public class BoardService {
     }
 
 
+    public Long update(BoardDTO boardDTO) throws IOException {
+                memberRepository.findByMemberEmail(boardDTO.getBoardWriter()).get();
+        if (boardDTO.getBoardFile() == null || boardDTO.getBoardFile().size() == 0) {
+            BoardEntity boardEntity = BoardEntity.toUpdateEntity(boardDTO);
+            return boardRepository.save(boardEntity).getId();
 
+        } else {
+            System.out.println("파일있음");
+            // 게시글 정보를 먼저 저장하고 해당 게시글의 entity를 가져옴
+            BoardEntity boardEntity = BoardEntity.toUpdateFileEntity(boardDTO);
+            Long savedId = boardRepository.save(boardEntity).getId();
+            BoardEntity entity = boardRepository.findById(savedId).get();
+            // 파일이 담긴 list를 반복문으로 접근하여 하나씩 이름 가져오고, 저장용 이름 만들고
+            // 로컬 경로에 저장하고 board_file_table에 저장
+            for (MultipartFile boardFile : boardDTO.getBoardFile()) {
+//                MultipartFile boardFile = boardDTO.getBoardFile();
+                String originalFileName = boardFile.getOriginalFilename();
+                String storedFileName = System.currentTimeMillis() + "_" + originalFileName;
+                String savePath = "D:\\springboot_img\\" + storedFileName;
+                boardFile.transferTo(new File(savePath));
+                BoardFileEntity boardFileEntity = BoardFileEntity.toUpdatdBoardFileEntity(boardEntity,storedFileName,originalFileName);
+                boardFileRepository.save(boardFileEntity);
+            }
+            return savedId;
+        }
+    }
 
-
+    public void delete(Long id) {
+        boardRepository.deleteById(id);
+    }
 }

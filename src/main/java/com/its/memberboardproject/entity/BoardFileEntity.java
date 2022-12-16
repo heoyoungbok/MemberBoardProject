@@ -1,5 +1,6 @@
 package com.its.memberboardproject.entity;
 
+import com.its.memberboardproject.dto.BoardDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -50,6 +51,24 @@ public class BoardFileEntity extends BaseEntity {
         boardFileEntity.setMemberEntity(entity);
 
         return boardFileEntity;
+
     }
+    public static  BoardFileEntity toUpdateFileEntity(MemberEntity entity,String originalFileName ,String storedFileName){
+      BoardFileEntity boardFileEntity =new BoardFileEntity();
+      boardFileEntity.setOriginalFileName(originalFileName);
+      boardFileEntity.setStoredFileName(storedFileName);
+      boardFileEntity.setMemberEntity(entity);
+
+      return boardFileEntity;
+    }
+    public static BoardFileEntity toUpdatdBoardFileEntity(BoardEntity entity, String originalFileName, String storedFileName) {
+        BoardFileEntity boardFileEntity = new BoardFileEntity();
+        boardFileEntity.setOriginalFileName(originalFileName);
+        boardFileEntity.setStoredFileName(storedFileName);
+        boardFileEntity.setBoardEntity(entity);
+
+        return boardFileEntity;
+    }
+
 
 }

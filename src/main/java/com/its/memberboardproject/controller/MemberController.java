@@ -86,19 +86,19 @@ public class MemberController {
         return "memberUpdate";
     }
 
-    @Transactional
+
     @PostMapping("/update")
-    public String update(@ModelAttribute MemberDTO memberDTO){
+    public String update(@ModelAttribute MemberDTO memberDTO) throws IOException {
         memberService.update(memberDTO);
         return "main";
 
     }
-@Transactional
-    @PutMapping("/{id}")
-    public ResponseEntity updateAxios(@RequestBody MemberDTO memberDTO){
-        memberService.update(memberDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+//@Transactional
+//    @PutMapping("/{id}")
+//    public ResponseEntity updateAxios(@RequestBody MemberDTO memberDTO) throws IOException {
+//        memberService.update(memberDTO);
+//        return new ResponseEntity<>(HttpStatus.OK);
+//    }
 
 
 }
