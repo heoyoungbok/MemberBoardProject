@@ -95,14 +95,17 @@ public class MemberController {
         return "main";
 
     }
-}
+
 //@Transactional
 //    @PutMapping("/{id}")
 //    public ResponseEntity updateAxios(@RequestBody MemberDTO memberDTO) throws IOException {
 //        memberService.update(memberDTO);
 //        return new ResponseEntity<>(HttpStatus.OK);
 //    }
-//    @GetMapping("logout")
-//    public String logout
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+    session.invalidate();
+    return "redirect:/board/";
+    }
 
-//}
+}

@@ -38,7 +38,7 @@
         </form>
         <div class="text-end">
           <div th:if="${session.loginEmail != null } ">
-            <button type="button" onclick="logout()" class="btn btn-warning">LOGOUT</button>
+            <button th:onclick="| location.href = '@{/member/logout}'|" class="btn btn-warning">LOGOUT</button>
 <!--            <button type="button" onclick="myPages()" class="btn btn-warning">MY PAGE</button>-->
             <td><a th:href="@{/member/page}" th:text="${session.loginEmail}"></a></td>
           </div>
@@ -57,9 +57,9 @@
 <script>
 
 
-  const logout = () => {
-    location.href = "/member/logout";
-  }
+  // const logout = () => {
+  //  ";
+  // }
 
 
 
