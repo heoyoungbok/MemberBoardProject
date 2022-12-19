@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.imageio.IIOException;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -78,6 +79,14 @@ public class MemberController {
         model.addAttribute("member", memberDTO);
         return "myPage";
     }
+@Transactional
+    @GetMapping("/admin")
+    public String adminForm(Model model){
+        List<MemberDTO> memberList = memberService.findAll();
+        model.addAttribute("memberList",memberList);
+        return "admin";
+    }
+
 
     @Transactional
     @GetMapping("/update")
@@ -95,6 +104,7 @@ public class MemberController {
         return "paging";
 
     }
+
 
 //@Transactional
 //    @PutMapping("/{id}")

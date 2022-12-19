@@ -23,7 +23,7 @@
 
         </ul>
 
-        <form action="/board/search" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
+        <form action="/search" class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
           <div class="input-group">
             <select name="type" class="form-select" >
               <option value="boardTitle" selected>제목</option>
@@ -36,7 +36,9 @@
             <button class="btn btn-outline-light"><i class="bi bi-search"></i></button>
           </div>
         </form>
-        <div class="text-end">
+        <div th:if="${session.loginEmail == 'admin'}">
+          <button type="button" th:onclick="|location.href='@{/member/admin}'|" class="btn btn-outline-light me-2">admin</button>
+        </div>
           <div th:if="${session.loginEmail != null } ">
             <button th:onclick="| location.href = '@{/member/logout}'|" class="btn btn-warning">LOGOUT</button>
 <!--            <button type="button" onclick="myPages()" class="btn btn-warning">MY PAGE</button>-->
@@ -52,14 +54,15 @@
       </div>
     </div>
 
+
 </th:block>
 
 <script>
 
 
-  // const logout = () => {
-  //  ";
-  // }
+//   const adminP = () => {
+//    location.href="/member/admin";
+//   }
 
 
 

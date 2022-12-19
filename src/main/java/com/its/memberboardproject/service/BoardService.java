@@ -132,4 +132,23 @@ public class BoardService {
     public void delete(Long id) {
         boardRepository.deleteById(id);
     }
+
+    @Transactional
+    public List<BoardDTO> search(String type, String q) {
+        List<BoardDTO> boardDTOList = new ArrayList<>();
+        List<BoardEntity> boardEntityList = null;
+        if (type.equals("boardWriter")){
+            boardEntityList = boardRepository.findByBoardWriterContainingOrderByIdDesc(q);
+
+        }else if (type.equals("boardTitle")){
+            boardEntityList = boardRepository.findByBoardTitleContainingOrderByIdDesc(q);
+        }else {
+            boardEntityList = boardRepository.findByBoardTitleContainingOrBoardWriterContainingOrderByIdDesc(q,q);
+        }
+
+        for (BoardEntity boardEntity : boardEntityList){
+            boardDTOList.add(BoardDTO.boDTO(boardEntity));
+        }
+        return boardDTOList;
+    }
 }

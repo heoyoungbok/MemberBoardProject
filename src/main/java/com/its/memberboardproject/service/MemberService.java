@@ -1,8 +1,6 @@
 package com.its.memberboardproject.service;
 
-import com.its.memberboardproject.dto.BoardDTO;
 import com.its.memberboardproject.dto.MemberDTO;
-import com.its.memberboardproject.entity.BoardEntity;
 import com.its.memberboardproject.entity.BoardFileEntity;
 import com.its.memberboardproject.entity.MemberEntity;
 import com.its.memberboardproject.repository.BoardFileRepository;
@@ -14,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -117,4 +117,13 @@ public class MemberService {
         return savedId;
     }
 
+    public List<MemberDTO> findAll() {
+      List<MemberEntity> memberEntityList = memberRepository.findAll();
+      List<MemberDTO> memberDTOList = new ArrayList<>();
+
+      for (MemberEntity memberEntity : memberEntityList){
+          memberDTOList.add(MemberDTO.toDTO(memberEntity));
+      }
+        return memberDTOList;
+    }
 }
