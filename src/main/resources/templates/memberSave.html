@@ -9,12 +9,15 @@
     <script th:src="@{/js/jquery.min.js}"></script>
 </head>
 <body>
-<form action="/member/save" method="post" enctype="multipart/form-data">
+<form action="/member/save" method="post"  name="saveForm" enctype="multipart/form-data">
   <input type="text" name="memberEmail" id="memberEmail" placeholder="이메일" onblur="emailCK()">
     <span id="emailDUP"></span>
-  <input type="text" name="memberPassword" id="memberPassword" placeholder="비밀번호">
+    <span id="inputEmail"></span>
+  <input type="text" name="memberPassword" id="memberPassword" placeholder="비밀번호" onblur="passCk()">
+    <span id="passZone"></span>
   <input type="text" name="memberName" id="memberName" placeholder="이름">
-  <input type="text" name="memberMobile" id="memberMobile" placeholder="전화번호">
+  <input type="text" name="memberMobile" id="memberMobile" placeholder="전화번호" onblur="numCk()">
+    <span id="mobileZone"></span>
   <input type="file" name="memberProfile" multiple>
   <input type="submit" value="회원가입">
 
@@ -23,25 +26,69 @@
 </form>
 </body>
 <script th:inline="javascript">
+
     const emailCK= () => {
+
         const email = document.getElementById("memberEmail").value;
         const checkResult = document.getElementById("emailDUP")
-        console.log("이메일",email);
-            axios({
-                method:"post",
-                url:"/member/emailCheck",
-                params:{
-                    inputEmail:email,
-                }
-            }).then(res =>{
-                checkResult.innerHTML= "사용할 수 있는 이메일 입니다.";
-                checkResult.style.color = "green";
+        // const emailPush = document.getElementById("inputEmail");
+        const exp = /^[A-Za-z]{1}[A-Za-z0-9_-]{3,19}$/ //반드시 영문으로 시작 숫자+언더바/하이픈 허용 4~20자리
+        // console.log("이메일",email);
+        axios({
+            method: "post",
+            url: "/member/emailCheck",
+            params: {
+                inputEmail: email,
+            }
+        }).then(res => {
+            checkResult.innerHTML = "사용할 수 있는 이메일 입니다.";
+            checkResult.style.color = "green";
 
-            }).catch(err =>{
-                checkResult.innerHTML="중복된 이메일 입니다.";
-                checkResult.style.color="red";
-            })
+
+        }).catch(err => {
+            checkResult.innerHTML = "중복된 이메일 입니다.";
+            checkResult.style.color = "red";
+
+        })
+
+        if (email.match(exp)) {
+            alert("올바른 이메일 입니다.");
+            console.log("exp if값");
+        } else {
+            alert("다시 확인하여주세요");
+        }
 
     }
+
+
+
+    const passCk = () => {
+        const pass = document.getElementById("memberPassword").value;
+        const checkResult = document.getElementById("passZone");
+        const exp = /^[A-Za-z]{1}[A-Za-z0-9_-]{3,19}$/ // 문자, 숫자 1개이상 포함, 8자리 이상
+
+        if (pass.match(exp)){
+            alert("올바른 비밀 번호입니다.");
+        }else {
+            alert("다시 확인하여주세요");
+        }
+
+
+    }
+
+    const numCk = () => {
+      const number = document.getElementById("memberMobile").value;
+      const checkResult = document.getElementById("mobileZone");
+      const exp =/^\d{3}-\d{4}-\d{4}$/; // 휴대폰 번호
+
+        if (number.match(exp)){
+            alert("올바른 번호 입니다");
+        }else {
+            alert("다시 확인하여주세요");
+        }
+
+
+    }
+
 </script>
 </html>
