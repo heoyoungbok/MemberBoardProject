@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>myPage</title>
+    <style>
+        #page-detail{
+            width: 800px;
+            margin-top: 50px;
+        }
+
+
+    </style>
+</head>
+<body>
+<th:block th:replace="commonPages/header :: header"></th:block>
+<div class="container" id="page-detail">
+    <table class="table table-hover">
+        <tr>
+            <th>email</th>
+            <td th:text="${member.memberEmail}"></td>
+        </tr>
+        <tr>
+            <th>name</th>
+            <td th:text="${member.memberName}"></td>
+        </tr>
+        <tr>
+            <th>memberMobile</th>
+            <td th:text="${member.memberMobile}"></td>
+        </tr>
+
+        <tr th:if="${member.fileAttached == 1}">
+            <th>image</th>
+            <td th:each="fileName: ${member.storedFileName}">
+                <img th:src="@{|/upload/${fileName}}" alt="" width="200" height="200">
+            </td>
+        </tr>
+        <div th:if="${session.loginEmail != null } ">
+            <button type="button" onclick="update()" class="btn btn-warning">정보수정</button>
+            <!--            <button type="button" onclick="myPages()" class="btn btn-warning">MY PAGE</button>-->
+
+        </div>
+    </table>
+</div>
+
+
+</body>
+<script>
+ const update = () => {
+   location.href="/member/update";
+ }
+</script>
+</html>

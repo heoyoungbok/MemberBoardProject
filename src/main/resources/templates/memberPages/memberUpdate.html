@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+<!--<th:block th:replace="commonPages/header :: header"></th:block>-->
+<form action="/member/update" method="post" enctype="multipart/form-data">
+    <input type="text" name="id" th:value="${member.id}" readonly>
+    <input name="memberEmail" th:value="${session.loginEmail}">
+    <input name="memberName" th:value="${member.memberName}">
+    <input type="text" name="memberPassword" id="memberPassword" placeholder="비밀번호">
+    <input type="text" name="memberMobile" id="memberMobile" placeholder="전화번호">
+    <input type="file" name="memberProfile" id="memberProfile" multiple>
+    <input type="submit" value="수정" >
+</form>
+</body>
+<script>
+    // const updateAxios = () => {
+    //     const id = document.querySelector('input[name="id"]').value;
+    //     const email = document.querySelector('input[name="memberEmail"]').value;
+    //     const password = document.getElementsByName("memberPassword")[0].value;
+    //     const name = document.getElementsByName("memberName")[0].value;
+    //     const mobile = document.getElementsByName("memberMobile")[0].value;
+    //     const file = document.getElementById("memberProfile").value;
+    //     const passwordDB =[[${member.memberPassword}]];
+    //     if (password == passwordDB){
+    //         axios({
+    //             headers: {
+    //                 "Content-Type": "multipart/form-data",
+    //                 method: "put",
+    //                 url: "/member/" + id,
+    //                 data: {
+    //                     id: id,
+    //                     memberEmail: email,
+    //                     memberPassword: password,
+    //                     memberName: name,
+    //                     memberMobile: mobile,
+    //                     memberProfile: file
+    //                 },
+    //             }
+    //         }).then(res =>{
+    //             console.log("수정 성공");
+    //             location.href="/member/"+id;
+    //         }).catch(err =>{
+    //             console.log("수정 실패");
+    //         })
+    //         }else {
+    //         alert("비밀번호가 틀립니다!");
+    //     }
+
+
+</script>
+</html>

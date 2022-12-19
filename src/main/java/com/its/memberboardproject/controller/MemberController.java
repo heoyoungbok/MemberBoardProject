@@ -1,8 +1,6 @@
 package com.its.memberboardproject.controller;
 
-import com.its.memberboardproject.dto.BoardDTO;
 import com.its.memberboardproject.dto.MemberDTO;
-import com.its.memberboardproject.entity.MemberEntity;
 import com.its.memberboardproject.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.imageio.IIOException;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
